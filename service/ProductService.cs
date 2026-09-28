@@ -15,6 +15,13 @@ public class ProductService
 
     public async Task create_product(Product product)
     {
-        await db.Products.InsertAsync(() => product);
+        await db.Products.InsertAsync(() => new Product()
+        {
+            name = product.name,
+            price = product.price,
+            quantity = product.quantity,
+            available =  product.available,
+            category_id =  product.category_id
+        });
     }
 }

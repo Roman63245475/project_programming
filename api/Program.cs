@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default");
 var database = DatabaseConfiguration.Create(connectionString);
 
+DatabaseInitializer.Initialize(database);
+
 builder.Services.AddSingleton<DataBase>(_ => DatabaseConfiguration.Create(connectionString));
 
 builder.Services.AddScoped<ProductController>();
@@ -40,8 +42,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost(nameof(create_product))]
-    public void create_product([FromBody] Product product)
+    public async Task<IActionResult> create_product([FromBody] Product product)
     {
-        Console.WriteLine(product.name);
+        await productService.create_product(product);
+        return Ok();
     }
 }

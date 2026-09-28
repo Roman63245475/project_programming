@@ -17,10 +17,20 @@ public class DatabaseInitializer
         );
         
         database.Execute("""
-                         ALTER TABLE products
-                         ADD CONSTRAINT FK_products_categories
-                         FOREIGN KEY (category_id)
-                         REFERENCES categories(id);
+                         DO $$
+                         BEGIN
+                             IF NOT EXISTS (
+                                 SELECT 1
+                                 FROM pg_constraint
+                                 WHERE conname = 'fk_products_categories'
+                             ) THEN
+                                 ALTER TABLE products
+                                 ADD CONSTRAINT fk_products_categories
+                                 FOREIGN KEY (category_id)
+                                 REFERENCES categories(id);
+                             END IF;
+                         END
+                         $$;
                          """);
     }
 }
