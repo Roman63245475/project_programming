@@ -1,0 +1,87 @@
+# =========================
+# .NET / ASP.NET Core
+# =========================
+
+# Build output
+**/bin/
+**/obj/
+
+# User-specific files
+**/*.user
+**/*.userosscache
+**/*.suo
+
+# Visual Studio / Rider
+.vs/
+.idea/
+
+# Rider
+**/.idea/
+
+# VS Code
+.vscode/
+
+# Test results
+**/TestResults/
+**/*.trx
+
+# NuGet
+**/packages/
+*.nupkg
+*.snupkg
+
+# ASP.NET Core local development certificates
+**/https/
+
+# User Secrets
+**/secrets.json
+
+
+# =========================
+# React / Node / Bun
+# =========================
+
+# Dependencies
+**/node_modules/
+
+# Build output
+**/dist/
+**/build/
+
+# Vite
+**/.vite/
+
+# Bun
+**/.bun/
+
+# Logs
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+**/bun-debug.log*
+
+# Environment variables
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Keep example environment files
+!**/.env.example
+
+
+# =========================
+# OS
+# =========================
+
+# Linux
+*~
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
