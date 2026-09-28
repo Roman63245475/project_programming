@@ -1,8 +1,17 @@
+using be;
+using database;
 using Microsoft.AspNetCore.Mvc;
+using service;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Default");
+var database = DatabaseConfiguration.Create(connectionString);
+
+builder.Services.AddSingleton<DataBase>(_ => DatabaseConfiguration.Create(connectionString));
+
+builder.Services.AddScoped<ProductController>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddControllers();
-builder.Services.AddScoped<TestApiController>();
 
 builder.Services.AddCors(options =>
 {
@@ -22,11 +31,17 @@ app.MapControllers();
 app.Run();
 
 
-public class TestApiController : ControllerBase
+public class ProductController : ControllerBase
 {
-    [HttpGet(nameof(test_con))]
-    public string test_con()
+    private ProductService productService;
+    public ProductController(ProductService productService)
     {
-        return """{"response": "Everything's fine"}""";
+        this.productService = productService;
+    }
+
+    [HttpPost(nameof(create_product))]
+    public void create_product([FromBody] Product product)
+    {
+        Console.WriteLine(product.name);
     }
 }
