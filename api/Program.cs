@@ -1,5 +1,6 @@
 using be;
 using database;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service;
 
@@ -13,6 +14,7 @@ builder.Services.AddSingleton<DataBase>(_ => DatabaseConfiguration.Create(connec
 
 builder.Services.AddScoped<ProductController>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CategoryService>();
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
@@ -45,6 +47,15 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> create_product([FromBody] Product product)
     {
         await productService.create_product(product);
+        return Ok();
+    }
+}
+
+[Route("api/[controller]")]
+public class CategoryController(CategoryService categoryService) : ControllerBase {
+    [HttpPost(nameof(CreateCategory))]
+    public async Task<IActionResult> CreateCategory([FromBody] Category category) {
+        await categoryService.CreateCategory(category);
         return Ok();
     }
 }
