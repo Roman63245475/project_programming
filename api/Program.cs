@@ -1,6 +1,5 @@
 using be;
 using database;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using service;
 
@@ -17,6 +16,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddControllers();
 
+builder.Services.AddOpenApiDocument();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("React", policy =>
@@ -29,6 +30,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseOpenApi();
+app.UseSwaggerUi();
 app.UseCors("React");
 app.MapControllers();
 

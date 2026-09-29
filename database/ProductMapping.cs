@@ -34,5 +34,9 @@ public static class ProductMapping
         builder.Entity<Product>()
             .Property(x => x.category_id)
             .HasColumnName("category_id");
+        
+        builder.Entity<Product>()
+            .Property(x => x.image_path)
+            .HasColumnName("image_path");
     }
 }
