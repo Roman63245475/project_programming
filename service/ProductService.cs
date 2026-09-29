@@ -24,4 +24,9 @@ public class ProductService
             category_id =  product.category_id
         });
     }
+
+    public List<Product> GetProducts()
+    {
+        return db.Products.ToList();
+    }
 }

@@ -1,6 +1,4 @@
-using be;
 using database;
-using Microsoft.AspNetCore.Mvc;
 using service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +13,8 @@ builder.Services.AddScoped<ProductController>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddControllers();
 
+builder.Services.AddOpenApiDocument();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("React", policy =>
@@ -27,24 +27,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseOpenApi();
+app.UseSwaggerUi();
 app.UseCors("React");
 app.MapControllers();
 
 app.Run();
-
-
-public class ProductController : ControllerBase
-{
-    private ProductService productService;
-    public ProductController(ProductService productService)
-    {
-        this.productService = productService;
-    }
-
-    [HttpPost(nameof(create_product))]
-    public async Task<IActionResult> create_product([FromBody] Product product)
-    {
-        await productService.create_product(product);
-        return Ok();
-    }
-}
