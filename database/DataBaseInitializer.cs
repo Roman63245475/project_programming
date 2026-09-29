@@ -32,5 +32,9 @@ public class DatabaseInitializer
                          END
                          $$;
                          """);
+        database.Execute(@"
+        ALTER TABLE products
+        ADD COLUMN IF NOT EXISTS image_path TEXT;
+    ");
     }
 }

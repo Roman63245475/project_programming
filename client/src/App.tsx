@@ -1,6 +1,7 @@
 import "./index.css";
 import { useEffect, useState } from "react";
 import { Api, type Product } from "../Api.ts";
+import {useNavigate} from "react-router";
 
 const productApi = new Api();
 
@@ -12,18 +13,7 @@ export function App() {
     setProducts(response.data);
   }
 
-  async function createProduct() {
-    const newProduct: Product = {
-      name: "Kalivan",
-      price: 20.4,
-      quantity: 1,
-      available: true,
-      category_id: 1,
-    };
-
-    await productApi.createProduct.productCreateProduct(newProduct);
-    await loadProducts();
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
     void loadProducts();
@@ -31,7 +21,7 @@ export function App() {
 
   return (
     <main>
-      <button onClick={createProduct}>Create product</button>
+      <button onClick={() => navigate("/create_product")}>Create product</button>
 
       {products.length === 0 ? (
         <p>No products found.</p>

@@ -21,7 +21,8 @@ public class ProductService
             price = product.price,
             quantity = product.quantity,
             available =  product.available,
-            category_id =  product.category_id
+            category_id =  product.category_id,
+            image_path = product.image_path
         });
     }
 

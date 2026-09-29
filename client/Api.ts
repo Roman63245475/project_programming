@@ -21,6 +21,7 @@ export interface Product {
   available?: boolean;
   /** @format int32 */
   category_id?: number;
+  image_path?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -294,12 +295,28 @@ export class Api<
      * @name ProductCreateProduct
      * @request POST:/create_product
      */
-    productCreateProduct: (data: Product, params: RequestParams = {}) =>
+    productCreateProduct: (
+      data: {
+        /** @format int32 */
+        id?: number | null;
+        name?: string | null;
+        /** @format decimal */
+        price?: number;
+        /** @format int32 */
+        quantity?: number;
+        available?: boolean;
+        /** @format int32 */
+        category_id?: number;
+        /** @format binary */
+        image?: File | null;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<Blob, any>({
         path: `/create_product`,
         method: "POST",
         body: data,
-        type: ContentType.Json,
+        type: ContentType.FormData,
         ...params,
       }),
   };
