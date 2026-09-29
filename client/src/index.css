@@ -7,6 +7,7 @@
 }
 body {
   margin: 0;
+  text-align: center;
   display: grid;
   place-items: center;
   min-width: 320px;
@@ -45,6 +46,36 @@ p{
   gap: 1rem;
   align-items: center;
   justify-content: space-evenly;
+}
+
+.space-even-h{
+  display: flex;
+  flex-flow: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+table{
+  width: 100%;
+  text-align: center;
+  border: 5px solid rgb(5 1 16 / 0.11);
+  border-collapse: collapse;
+}
+
+table th{
+  background-color: rgb(136 136 136 / 0.85);
+  border: 5px solid rgb(5 1 16 / 0.11);
+}
+
+table td{
+  background-color: rgb(209 209 209 / 0.85);
+  border-right: 5px solid rgb(5 1 16 / 0.11);
+}
+
+.content-pane{
+  display: flex;
+  flex-direction: column;
 }
 
 body::before {
