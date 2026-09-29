@@ -42,9 +42,4 @@ export function App() {
         </main>
     );
 }
-
-async function create_product(prod: object){
-    const res = await fetch("http://localhost:5260/create_product", {method: "Post", headers: {"Content-Type": "application/json"}, body: JSON.stringify(prod)})
-    console.log(res.status)
-}
 export default App;

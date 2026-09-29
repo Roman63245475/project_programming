@@ -24,6 +24,14 @@ export interface Product {
   image_path?: string;
 }
 
+export interface ApiResponse {
+  message?: string;
+}
+
+export interface CategoryDTO {
+  name?: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -332,6 +340,24 @@ export class Api<
       this.request<Product[], any>({
         path: `/GetProducts`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  api = {
+    /**
+     * No description
+     *
+     * @tags Category
+     * @name CategoryCreateCategory
+     * @request POST:/api/Category/CreateCategory
+     */
+    categoryCreateCategory: (data: CategoryDTO, params: RequestParams = {}) =>
+      this.request<ApiResponse, any>({
+        path: `/api/Category/CreateCategory`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

@@ -1,16 +1,21 @@
 import "./index.css";
 import {useState} from "react";
+import {Api} from "../Api.ts";
+const apiCategory = new Api();
 
 export function CategoryComponent({ onClose }: { onClose: () => void }) {
     const [categoryName, setCategoryName] = useState("");
-
+    const [message, setMessage] = useState("");
     async function createCategory() {
-        const newCategory = {
-            name: categoryName
+        try{
+            const request = await apiCategory.api.categoryCreateCategory({
+                name: categoryName
+            })
+            setMessage(request.data.message ?? "");
+        }catch(err: any){
+            setMessage(err.error.message ?? "");
         }
-        const request = await fetch("http://localhost:5260/api/category/CreateCategory",
-            {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(newCategory)});
-        console.log(request.status);
+
     }
     return (
         <div className="pop-up-bg" onClick={onClose}>
@@ -19,7 +24,10 @@ export function CategoryComponent({ onClose }: { onClose: () => void }) {
                 <div className={"space-even-v"}>
                     <p>Category Name:</p>
                     <input type={"text"} onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
-                    <button onClick={() => {createCategory(); onClose()}}>Create</button>
+                    {
+                        message.trim().length > 0 && <p>{message}</p>
+                    }
+                    <button onClick={() => createCategory()}>Create</button>
                 </div>
             </div>
         </div>
