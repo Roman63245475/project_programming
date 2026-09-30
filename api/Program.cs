@@ -7,7 +7,9 @@ var database = DatabaseConfiguration.Create(connectionString);
 
 DatabaseInitializer.Initialize(database);
 
-builder.Services.AddSingleton<DataBase>(_ => DatabaseConfiguration.Create(connectionString));
+builder.Services.AddScoped<DataBase>(
+    _ => DatabaseConfiguration.Create(connectionString)
+);
 
 builder.Services.AddScoped<ProductController>();
 builder.Services.AddScoped<ProductService>();

@@ -15,6 +15,11 @@ public class ProductService
 
     public async Task create_product(Product product)
     {
+        Console.WriteLine($"db is null: {db == null}");
+        Console.WriteLine($"product is null: {product == null}");
+        Console.WriteLine($"name: {product.name}");
+        Console.WriteLine($"category_id: {product.category_id}");
+        Console.WriteLine($"image_path: {product.image_path}");
         await db.Products.InsertAsync(() => new Product()
         {
             name = product.name,

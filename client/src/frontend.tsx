@@ -9,7 +9,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import {RouterProvider, createBrowserRouter} from "react-router";
-import CreateProductForm from "@/CreateProductForm";
+import CreateProductForm from "@/CreateProductForm.jsx";
 
 const elem = document.getElementById("root")!;
 const app = (

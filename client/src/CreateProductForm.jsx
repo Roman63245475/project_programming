@@ -1,17 +1,23 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Api} from "../Api";
+
 import {useNavigate} from "react-router";
 
-const productApi = new Api();
+const api = new Api();
 
 const CreateProductForm = () => {
     const navigate = useNavigate();
+
+    const [categories, setCategories] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+
     const [product, setProduct] = useState({
         name: '',
         image: null,
         price: 0.0,
         quantity: 0,
         available: false,
+        category_id: null
     });
 
     const setField = (name, value) => {
@@ -21,10 +27,19 @@ const CreateProductForm = () => {
         })
     }
 
+    useEffect(() => {
+        api.api.categoryGetCategories().then(r => r.json()).then(data => setCategories(data));
+        setLoaded(true);
+    },[])
+
+    if (!loaded) {
+        return <>loading...</>
+    }
+
     return (
         <div>
             Name: <input type={'text'} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input>
-            Category: selection field needs to be here.
+            Category: <select onChange={(e) => setField("category_id", Number(e.target.value))}>{categories.map((category) => (<option key={category.id} value={category.id}>{category.name}</option>))}</select>
             Image: <input type={'file'} onChange={(e) => setField('image', e.target.files[0])}></input>
             Price: <input type={'number'} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input>
             quantity: <input type={'number'} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input>
@@ -40,10 +55,10 @@ const create_product = async (product, navigate) => {
     formData.append('price', product.price);
     formData.append('quantity', product.quantity);
     formData.append('available', product.available);
-    formData.append('category_id', 1);
+    formData.append('category_id', product.category_id);
     formData.append('image', product.image);
 
-    await productApi.createProduct.productCreateProduct(formData)
+    await api.createProduct.productCreateProduct(formData)
     navigate("/")
 }
 

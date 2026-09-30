@@ -12,4 +12,10 @@ public class CategoryController(CategoryService categoryService) : ControllerBas
         if (!isSuccess) return BadRequest(new ApiResponse(message));
         return Ok(new ApiResponse(message));
     }
+
+    [HttpGet(nameof(get_categories))]
+    public async Task<List<Category>> get_categories()
+    {
+        return await categoryService.get_categories();
+    }
 }

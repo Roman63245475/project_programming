@@ -32,6 +32,12 @@ export interface CategoryDTO {
   name?: string;
 }
 
+export interface Category {
+  /** @format int32 */
+  id?: number;
+  name?: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -358,6 +364,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Category
+     * @name CategoryGetCategories
+     * @request GET:/api/Category/get_categories
+     */
+    categoryGetCategories: (params: RequestParams = {}) =>
+      this.request<Category[], any>({
+        path: `/api/Category/get_categories`,
+        method: "GET",
         format: "json",
         ...params,
       }),
