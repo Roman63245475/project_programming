@@ -6,17 +6,24 @@ import {useNavigate} from "react-router";
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
 import {CategoryComponent} from "@/CategoryComponent.tsx";
-const productApi = new Api();
+const BackendApi = new Api();
 
 export function App() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+    const [category, setCategory] = useState<Category[]>([]);
+    
+    async function loadCategories() {
+        const resp = await BackendApi.api.categoryGetCategories();
+        setCategory(resp.data);
+    }
     async function loadProducts() {
-        const response = await productApi.getProducts.productGetProducts();
+        const response = await BackendApi.getProducts.productGetProducts();
         setProducts(response.data);
     }
     const navigate = useNavigate();
     useEffect(() => {
+        void loadCategories();
         void loadProducts();
     }, []);
     return (
@@ -26,7 +33,9 @@ export function App() {
             <div className="content-pane">
                 <div className={"space-even-h"}>
                     <select>
-                        <option>Kakayato krutaya kategoria</option>
+                        {category.map((category) => (
+                            <option key={category.id}>{category.name}</option>
+                        ))}
                     </select>
                     <button onClick={() => setIsCategoryOpen(!isCategoryOpen)}>Create sick ass category</button>
                     <button onClick={() => navigate("/create_product")}>Create product</button>
