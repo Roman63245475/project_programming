@@ -11,6 +11,7 @@ builder.Services.AddSingleton<DataBase>(_ => DatabaseConfiguration.Create(connec
 
 builder.Services.AddScoped<ProductController>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CategoryService>();
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApiDocument();
