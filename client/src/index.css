@@ -250,3 +250,28 @@ code {
     animation: none !important;
   }
 }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.product-card {
+  min-width: 0;
+}
+
+.product-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.product-card h3 {
+  margin: 12px 0 6px;
+}
+
+.product-card p {
+  margin: 0;
+}
+

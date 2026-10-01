@@ -6,16 +6,17 @@ using service;
 public class ProductController : ControllerBase
 {
     private ProductService productService;
-    
-    public ProductController(ProductService productService)
+    private readonly IWebHostEnvironment webHostEnvironment;
+    public ProductController(ProductService productService, IWebHostEnvironment webHostEnvironment)
     {
         this.productService = productService;
+        this.webHostEnvironment = webHostEnvironment;
     }
 
     [HttpPost(nameof(create_product))]
     public async Task<IActionResult> create_product([FromForm] ProductDTO productDTO)
     {
-        var file_path = "";
+        var imgPath = "";
         if (productDTO.image != null)
         {
             var dir = "product_images";
@@ -23,11 +24,16 @@ public class ProductController : ControllerBase
             {
                 Directory.CreateDirectory(dir);
             }
+            var imageDirectory = Path.Combine(webHostEnvironment.ContentRootPath, "product_images");
+            Directory.CreateDirectory(imageDirectory);
             
-            var file_name = Guid.NewGuid() + Path.GetExtension(productDTO.image.FileName);
-            file_path = Path.Combine(dir, file_name);
+            //var file_name = Guid.NewGuid() + Path.GetExtension(productDTO.image.FileName);
+            var file_name = $"{Guid.NewGuid()}{Path.GetExtension(productDTO.image.FileName)}";
+            var file_path = Path.Combine(imageDirectory, file_name);
             await using var stream = System.IO.File.Create(file_path);
             await productDTO.image.CopyToAsync(stream);
+            
+            imgPath = $"product_images/{file_name}";
             Console.WriteLine("file saved with name of ${file_name} aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         }
 
@@ -38,7 +44,7 @@ public class ProductController : ControllerBase
             quantity = productDTO.quantity,
             category_id = productDTO.category_id,
             available = productDTO.available,
-            image_path = file_path
+            image_path = imgPath
         };
         await productService.create_product(product);
         return Ok();

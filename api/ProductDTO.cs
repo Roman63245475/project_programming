@@ -1,3 +1,6 @@
+using be;
+using Facet;
+
 namespace api;
 
 public class ProductDTO
@@ -13,7 +16,4 @@ public class ProductDTO
     public ProductDTO()
     {
     }
-    
-    
-
 }
