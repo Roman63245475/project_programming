@@ -31,6 +31,8 @@ export function App() {
             
             {isCategoryOpen && <CategoryComponent onClose={() => setIsCategoryOpen(false)} />}
             <div className="content-pane">
+                <h1>List of products</h1>
+
                 <div className={"space-even-h"}>
                     <select>
                         {category.map((category) => (
@@ -39,7 +41,6 @@ export function App() {
                     </select>
                     <button onClick={() => setIsCategoryOpen(!isCategoryOpen)}>Create sick ass category</button>
                     <button onClick={() => navigate("/create_product")}>Create product</button>
-                    <h1>List of products</h1>
                 </div>
                     
                     <div className="product-grid">
