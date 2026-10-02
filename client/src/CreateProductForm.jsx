@@ -39,7 +39,14 @@ const CreateProductForm = () => {
     return (
         <div>
             Name: <input type={'text'} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input>
-            Category: <select onChange={(e) => setField("category_id", Number(e.target.value))}>{categories.map((category) => (<option key={category.id} value={category.id}>{category.name}</option>))}</select>
+            Category: <select defaultValue="" onChange={(e) => setField("category_id", Number(e.target.value))}>
+                <option value="" disabled>Select a category</option>
+                {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                        {category.name}
+                    </option>
+                ))}
+            </select>
             Image: <input type={'file'} onChange={(e) => setField('image', e.target.files[0])}></input>
             Price: <input type={'number'} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input>
             quantity: <input type={'number'} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input>
