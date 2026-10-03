@@ -51,8 +51,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet(nameof(GetProducts))]
-    public List<Product> GetProducts()
-    {
-       return productService.GetProducts();
+    public List<Product> GetProducts([FromQuery] CategoryDTO categoryDTO) {
+       return productService.GetProducts(categoryDTO);
     }
 }

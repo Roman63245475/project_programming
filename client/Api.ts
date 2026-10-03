@@ -29,6 +29,8 @@ export interface ApiResponse {
 }
 
 export interface CategoryDTO {
+  /** @format int32 */
+  id?: number;
   name?: string;
 }
 
@@ -342,10 +344,18 @@ export class Api<
      * @name ProductGetProducts
      * @request GET:/GetProducts
      */
-    productGetProducts: (params: RequestParams = {}) =>
+    productGetProducts: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+        name?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<Product[], any>({
         path: `/GetProducts`,
         method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
