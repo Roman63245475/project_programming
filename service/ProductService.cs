@@ -1,7 +1,6 @@
 ﻿using be;
 using database;
 using LinqToDB;
-
 namespace service;
 
 public class ProductService
@@ -35,4 +34,11 @@ public class ProductService
     {
         return db.Products.ToList();
     }
-}
+
+    public Product GetProduct(int id)
+    {
+        
+       return db.Products.Where(product => product.id == id).FirstOrDefault() ?? throw new Exception("Product not found");
+        
+       }
+    }

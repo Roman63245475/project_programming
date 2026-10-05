@@ -55,4 +55,10 @@ public class ProductController : ControllerBase
     {
        return productService.GetProducts();
     }
+
+    [HttpGet(nameof(GetProduct))]
+    public Product GetProduct(int id)
+    {
+        return productService.GetProduct(id);
+    }
 }

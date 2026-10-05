@@ -22,10 +22,16 @@ export function App() {
         setProducts(response.data);
     }
     const navigate = useNavigate();
+    
+    function getProductDetails(Product) {
+        navigate("/prod/"+Product.id);
+    }
     useEffect(() => {
         void loadCategories();
         void loadProducts();
     }, []);
+    
+    
     return (
         <main>
             
@@ -48,13 +54,18 @@ export function App() {
                             <p>No products found.</p>
                             ) : (
                                 products.map((product) => (
-                                    <article key={product.id} className="product-card">
+                                    <button
+                                        key={product.id}
+                                        className="product-card"
+                                        type="button"
+                                        onClick={() => getProductDetails(product)}
+                                    >
                                         <img src={`${ApiImgUrl}/${product.image_path?.replaceAll("\\", "/")}`} alt={product.name ?? "Product"} />
                                         <p>{product.name ?? "Unnamed product"}</p>
                                         <p>Price: {product.price !== undefined ? product.price : "-"}</p>
                                         <p>Quantity: {product.quantity !== undefined ? product.quantity : "-"}</p>
                                         <p>Available: {product.quantity !== undefined && product.available ? "Yes" : "No"}</p>
-                                    </article>
+                                    </button>
                                 ))
                             )
                         }
