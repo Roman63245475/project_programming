@@ -12,7 +12,7 @@
 
 export interface Product {
   /** @format int32 */
-  id?: number | null;
+  id?: number;
   name?: string;
   /** @format decimal */
   price?: number;
@@ -357,6 +357,21 @@ export class Api<
         method: "GET",
         query: query,
         format: "json",
+        ...params,
+      }),
+  };
+  id = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductDeleteProduct
+     * @request DELETE:/{id}
+     */
+    productDeleteProduct: (id: number, params: RequestParams = {}) =>
+      this.request<Blob, any>({
+        path: `/${id}`,
+        method: "DELETE",
         ...params,
       }),
   };

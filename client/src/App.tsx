@@ -12,7 +12,11 @@ export function App() {
     const [products, setProducts] = useState<Product[]>([]);
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [category, setCategory] = useState<Category[]>([]);
-    
+    const navigate = useNavigate();
+    useEffect(() => {
+        void loadCategories();
+        void loadProducts(-1);
+    }, []);
     async function loadCategories() {
         const resp = await BackendApi.api.categoryGetCategories();
         setCategory(resp.data);
@@ -31,11 +35,11 @@ export function App() {
             setProducts([]);
         }
     }
-    const navigate = useNavigate();
-    useEffect(() => {
-        void loadCategories();
-        void loadProducts(-1);
-    }, []);
+
+    async function deleteProduct(categoryId: number) {
+        const response = await BackendApi.id.productDeleteProduct(categoryId);
+    }
+
     return (
         <main>
             
@@ -67,6 +71,13 @@ export function App() {
                                         <p>Price: {product.price !== undefined ? product.price : "-"}</p>
                                         <p>Quantity: {product.quantity !== undefined ? product.quantity : "-"}</p>
                                         <p>Available: {product.quantity !== undefined && product.available ? "Yes" : "No"}</p>
+                                        <div className={"space-even-h"}>
+                                            <button>Edit Product</button>
+                                            <button onClick={async () => {
+                                                await deleteProduct(product.id)
+                                                await loadProducts(product.category_id);
+                                            }}>Delete Product</button>
+                                        </div>
                                     </article>
                                 ))
                             )

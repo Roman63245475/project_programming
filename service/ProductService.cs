@@ -35,4 +35,8 @@ public class ProductService
     public List<Product> GetProducts(CategoryDTO categoryDTO) {
         return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
+
+    public async Task Delete(int id) {
+        await db.Products.Where((p) => p.id == id).DeleteAsync();
+    }
 }

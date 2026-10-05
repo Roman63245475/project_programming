@@ -54,4 +54,10 @@ public class ProductController : ControllerBase
     public List<Product> GetProducts([FromQuery] CategoryDTO categoryDTO) {
        return productService.GetProducts(categoryDTO);
     }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct([FromRoute] int id) {
+        await productService.Delete(id);
+        return Ok();
+    }
 }
