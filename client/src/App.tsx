@@ -17,10 +17,10 @@ export function App() {
         const resp = await BackendApi.api.categoryGetCategories();
         setCategory(resp.data);
     }
-    async function loadProducts(categoryId : number) {
+    async function loadProductsByCategoryId(categoryId : number) {
         if (categoryId > 0) {
             try{
-                const response = await BackendApi.getProducts.productGetProducts({
+                const response = await BackendApi.getProductsByCategoryId.productGetProductsByCategoryId({
                     id: categoryId
                 });
                 setProducts(response.data);
@@ -30,6 +30,11 @@ export function App() {
         }else{
             setProducts([]);
         }
+    }
+    
+    async function loadProducts(){
+        const resp = await BackendApi.getProducts.productGetProducts();
+        setProducts(resp.data);
     }
     const navigate = useNavigate();
     
@@ -52,7 +57,7 @@ export function App() {
                 <div className={"space-even-h"}>
                     <select defaultValue={""} onChange={(e) => {
                         const selectedId = parseInt(e.target.value);
-                        loadProducts(selectedId);
+                        loadProductsByCategoryId(selectedId);
                     }}>
                         <option value="" disabled>Select a category to view products</option>
                         {category.map((category) => (
