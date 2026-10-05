@@ -1,4 +1,5 @@
-﻿using be;
+﻿using api;
+using be;
 using database;
 using LinqToDB;
 namespace service;
@@ -30,9 +31,8 @@ public class ProductService
         });
     }
 
-    public List<Product> GetProducts()
-    {
-        return db.Products.ToList();
+    public List<Product> GetProducts(CategoryDTO categoryDTO) {
+        return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
 
     public Product GetProduct(int id)

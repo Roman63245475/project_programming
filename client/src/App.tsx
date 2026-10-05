@@ -1,6 +1,6 @@
 import "./index.css";
 import { useEffect, useState } from "react";
-import { Api, type Product } from "../Api.ts";
+import {Api, type Category, type Product} from "../Api.ts";
 import {useNavigate} from "react-router";
 
 import logo from "./logo.svg";
@@ -17,9 +17,19 @@ export function App() {
         const resp = await BackendApi.api.categoryGetCategories();
         setCategory(resp.data);
     }
-    async function loadProducts() {
-        const response = await BackendApi.getProducts.productGetProducts();
-        setProducts(response.data);
+    async function loadProducts(categoryId : number) {
+        if (categoryId > 0) {
+            try{
+                const response = await BackendApi.getProducts.productGetProducts({
+                    id: categoryId
+                });
+                setProducts(response.data);
+            }catch(error){
+                setProducts([]);
+            }
+        }else{
+            setProducts([]);
+        }
     }
     const navigate = useNavigate();
     
@@ -28,7 +38,7 @@ export function App() {
     }
     useEffect(() => {
         void loadCategories();
-        void loadProducts();
+        void loadProducts(-1);
     }, []);
     
     
@@ -40,15 +50,18 @@ export function App() {
                 <h1>List of products</h1>
 
                 <div className={"space-even-h"}>
-                    <select>
+                    <select defaultValue={""} onChange={(e) => {
+                        const selectedId = parseInt(e.target.value);
+                        loadProducts(selectedId);
+                    }}>
+                        <option value="" disabled>Select a category to view products</option>
                         {category.map((category) => (
-                            <option key={category.id}>{category.name}</option>
+                            <option key={category.id} value={category.id} >{category.name}</option>
                         ))}
                     </select>
                     <button onClick={() => setIsCategoryOpen(!isCategoryOpen)}>Create sick ass category</button>
                     <button onClick={() => navigate("/create_product")}>Create product</button>
                 </div>
-                    
                     <div className="product-grid">
                         {products.length === 0 ? (
                             <p>No products found.</p>
@@ -70,7 +83,6 @@ export function App() {
                             )
                         }
                     </div>
-                    
                 </div>
         </main>
     );
