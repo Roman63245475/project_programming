@@ -365,6 +365,21 @@ export class Api<
      * No description
      *
      * @tags Product
+     * @name ProductGetProduct
+     * @request GET:/{id}
+     */
+    productGetProduct: (id: number, params: RequestParams = {}) =>
+      this.request<Product, any>({
+        path: `/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
      * @name ProductDeleteProduct
      * @request DELETE:/{id}
      */
@@ -372,6 +387,39 @@ export class Api<
       this.request<Blob, any>({
         path: `/${id}`,
         method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductUpdateProduct
+     * @request PUT:/{id}
+     */
+    productUpdateProduct: (
+      id: number,
+      data: {
+        /** @format int32 */
+        id?: number | null;
+        name?: string | null;
+        /** @format decimal */
+        price?: number;
+        /** @format int32 */
+        quantity?: number;
+        available?: boolean;
+        /** @format int32 */
+        category_id?: number;
+        /** @format binary */
+        image?: File | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.FormData,
         ...params,
       }),
   };

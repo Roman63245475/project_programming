@@ -72,7 +72,7 @@ export function App() {
                                         <p>Quantity: {product.quantity !== undefined ? product.quantity : "-"}</p>
                                         <p>Available: {product.quantity !== undefined && product.available ? "Yes" : "No"}</p>
                                         <div className={"space-even-h"}>
-                                            <button>Edit Product</button>
+                                            <button onClick={() => navigate(`/create_product/${product.id}`)}>Edit Product</button>
                                             <button onClick={async () => {
                                                 await deleteProduct(product.id)
                                                 await loadProducts(product.category_id);

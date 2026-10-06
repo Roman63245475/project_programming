@@ -1,12 +1,13 @@
 import {useEffect, useState} from "react";
 import {Api} from "../Api";
 
-import {useNavigate} from "react-router";
+import {useNavigate, useParams} from "react-router";
 
 const api = new Api();
 
 const CreateProductForm = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
 
     const [categories, setCategories] = useState([]);
     const [loaded, setLoaded] = useState(false);
@@ -32,14 +33,35 @@ const CreateProductForm = () => {
         setLoaded(true);
     },[])
 
+    useEffect(() => {
+        if (id) {
+            api.id.productGetProduct(id).then(r => r.json()).then(data => setProduct(data));
+        }
+    }, [id])
+
     if (!loaded) {
         return <>loading...</>
     }
 
+    async function save_changes(product, navigate){
+        const formData = new FormData();
+        formData.append('name', product.name);
+        formData.append('price', product.price);
+        formData.append('quantity', product.quantity);
+        formData.append('available', product.available);
+        formData.append('category_id', product.category_id);
+
+        if (product.image instanceof File) {
+            formData.append('image', product.image);
+        }
+        await api.id.productUpdateProduct(id, formData)
+        navigate('/');
+    }
+
     return (
         <div>
-            Name: <input type={'text'} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input>
-            Category: <select defaultValue="" onChange={(e) => setField("category_id", Number(e.target.value))}>
+            Name: <input type={'text'} value={product.name} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input>
+            Category: <select value={product.category_id} defaultValue={""} onChange={(e) => setField("category_id", Number(e.target.value))}>
                 <option value="" disabled>Select a category</option>
                 {categories.map((category) => (
                     <option key={category.id} value={category.id}>
@@ -48,10 +70,20 @@ const CreateProductForm = () => {
                 ))}
             </select>
             Image: <input type={'file'} onChange={(e) => setField('image', e.target.files[0])}></input>
-            Price: <input type={'number'} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input>
-            quantity: <input type={'number'} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input>
-            Available: <input type={'checkbox'} onChange={(e) => {setField('available', e.target.checked)}}></input>
-            <button onClick={() => create_product(product, navigate)}>Create</button>
+            Price: <input type={'number'} value={product.price} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input>
+            Quantity: <input type={'number'} value={product.quantity} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input>
+            Available: <input type={'checkbox'} checked={product.available} onChange={(e) => {setField('available', e.target.checked)}}></input>
+            <button onClick={() => {
+                if (!product.category_id) {
+                    alert('Please select a category');
+                    return;
+                }
+                if (id) {
+                    save_changes(product, navigate)
+                }else {
+                    create_product(product, navigate)
+                }
+            }}>{id ? 'Save Changes' : 'Create'}</button>
         </div>
     )
 }
