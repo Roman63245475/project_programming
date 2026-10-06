@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Facet" Version="6.6.13" />
+      <PackageReference Include="Facet.Extensions" Version="6.6.13" />
+    </ItemGroup>
+
 </Project>

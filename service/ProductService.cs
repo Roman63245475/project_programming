@@ -2,7 +2,6 @@
 using be;
 using database;
 using LinqToDB;
-
 namespace service;
 
 public class ProductService
@@ -32,7 +31,19 @@ public class ProductService
         });
     }
 
-    public List<Product> GetProducts(CategoryDTO categoryDTO) {
+    public List<Product> GetProductsByCategoryId(CategoryDTO categoryDTO) {
         return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
-}
+
+    public List<Product> GetProducts()
+    {
+        return db.Products.ToList();
+    }
+
+    public Product GetProduct(int id)
+    {
+        
+       return db.Products.Where(product => product.id == id).FirstOrDefault() ?? throw new Exception("Product not found");
+        
+       }
+    }

@@ -336,15 +336,15 @@ export class Api<
         ...params,
       }),
   };
-  getProducts = {
+  getProductsByCategoryId = {
     /**
      * No description
      *
      * @tags Product
-     * @name ProductGetProducts
-     * @request GET:/GetProducts
+     * @name ProductGetProductsByCategoryId
+     * @request GET:/GetProductsByCategoryId
      */
-    productGetProducts: (
+    productGetProductsByCategoryId: (
       query?: {
         /** @format int32 */
         id?: number;
@@ -353,7 +353,46 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<Product[], any>({
+        path: `/GetProductsByCategoryId`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  getProducts = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductGetProducts
+     * @request GET:/GetProducts
+     */
+    productGetProducts: (params: RequestParams = {}) =>
+      this.request<Product[], any>({
         path: `/GetProducts`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  getProduct = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductGetProduct
+     * @request GET:/GetProduct
+     */
+    productGetProduct: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Product, any>({
+        path: `/GetProduct`,
         method: "GET",
         query: query,
         format: "json",

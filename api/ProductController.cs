@@ -50,8 +50,20 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
+    [HttpGet(nameof(GetProductsByCategoryId))]
+    public List<Product> GetProductsByCategoryId([FromQuery] CategoryDTO categoryDTO) {
+       return productService.GetProductsByCategoryId(categoryDTO);
+    }
+
     [HttpGet(nameof(GetProducts))]
-    public List<Product> GetProducts([FromQuery] CategoryDTO categoryDTO) {
-       return productService.GetProducts(categoryDTO);
+    public List<Product> GetProducts()
+    {
+        return productService.GetProducts();
+    }
+
+    [HttpGet(nameof(GetProduct))]
+    public Product GetProduct(int id)
+    {
+        return productService.GetProduct(id);
     }
 }
