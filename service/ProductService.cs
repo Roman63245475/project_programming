@@ -35,7 +35,7 @@ public class ProductService
         return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
 
-    public List<Product> GetProducts()
+    public async Task<List<Product>> GetProducts()
     {
         return db.Products.ToList();
     }

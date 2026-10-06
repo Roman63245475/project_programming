@@ -37,13 +37,13 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet(nameof(GetProducts))]
-    public async Task<List<Product>> GetProducts([FromQuery] CategoryDTO categoryDTO) {
-       return await productService.GetProducts(categoryDTO);
+    public async Task<List<Product>> GetProducts() {
+       return await productService.GetProducts();
     }
 
     [HttpGet("{id}")]
     public async Task<Product> GetProduct([FromRoute] int id) {
-        return await productService.GetProduct(id);
+        return productService.GetProduct(id);
     }
     
     [HttpDelete("{id}")]

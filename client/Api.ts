@@ -12,7 +12,7 @@
 
 export interface Product {
   /** @format int32 */
-  id?: number | null;
+  id?: number;
   name?: string;
   /** @format decimal */
   price?: number;
@@ -376,75 +376,6 @@ export class Api<
         ...params,
       }),
   };
-  getProduct = {
-    /**
-     * No description
-     *
-     * @tags Product
-     * @name ProductGetProduct
-     * @request GET:/GetProduct
-     */
-    productGetProduct: (
-      query?: {
-        /** @format int32 */
-        id?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Product, any>({
-        path: `/GetProduct`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-  };
-  purchase = {
-    /**
-     * No description
-     *
-     * @tags Product
-     * @name ProductPurchase
-     * @request PATCH:/purchase
-     */
-    productPurchase: (
-      query?: {
-        /** @format int32 */
-        id?: number;
-        /** @format int32 */
-        purchase_quantity?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Blob, any>({
-        path: `/purchase`,
-        method: "PATCH",
-        query: query,
-        ...params,
-      }),
-  };
-  fbiCaught = {
-    /**
-     * No description
-     *
-     * @tags Product
-     * @name ProductFbiCaught
-     * @request DELETE:/fbi_caught
-     */
-    productFbiCaught: (
-      query?: {
-        /** @format int32 */
-        id?: number;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<Blob, any>({
-        path: `/fbi_caught`,
-        method: "DELETE",
-        query: query,
-        ...params,
-      }),
-  };
   id = {
     /**
      * No description
@@ -505,6 +436,52 @@ export class Api<
         method: "PUT",
         body: data,
         type: ContentType.FormData,
+        ...params,
+      }),
+  };
+  purchase = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductPurchase
+     * @request PATCH:/purchase
+     */
+    productPurchase: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+        /** @format int32 */
+        purchase_quantity?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/purchase`,
+        method: "PATCH",
+        query: query,
+        ...params,
+      }),
+  };
+  fbiCaught = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductFbiCaught
+     * @request DELETE:/fbi_caught
+     */
+    productFbiCaught: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/fbi_caught`,
+        method: "DELETE",
+        query: query,
         ...params,
       }),
   };

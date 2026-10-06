@@ -15,7 +15,7 @@ export function App() {
     const navigate = useNavigate();
     useEffect(() => {
         void loadCategories();
-        void loadProducts(-1);
+        void loadProducts();
     }, []);
     async function loadCategories() {
         const resp = await BackendApi.api.categoryGetCategories();
@@ -36,8 +36,8 @@ export function App() {
         }
     }
 
-    async function deleteProduct(categoryId: number) {
-        const response = await BackendApi.id.productDeleteProduct(categoryId);
+    async function deleteProduct(productId: number) {
+        const response = await BackendApi.id.productDeleteProduct(productId);
     }
 
     async function loadProducts(){
@@ -74,10 +74,9 @@ export function App() {
                             <p>No products found.</p>
                             ) : (
                                 products.map((product) => (
-                                    <button
+                                    <div
                                         key={product.id}
                                         className="product-card"
-                                        type="button"
                                         onClick={() => getProductDetails(product)}
                                     >
                                         <img src={`${ApiImgUrl}/${product.image_path?.replaceAll("\\", "/")}`} alt={product.name ?? "Product"} />
@@ -86,13 +85,17 @@ export function App() {
                                         <p>Quantity: {product.quantity !== undefined ? product.quantity : "-"}</p>
                                         <p>Available: {product.quantity !== undefined && product.available ? "Yes" : "No"}</p>
                                         <div className={"space-even-h"}>
-                                            <button onClick={() => navigate(`/create_product/${product.id}`)}>Edit Product</button>
-                                            <button onClick={async () => {
+                                            <button onClick={(e) => {
+                                                e.stopPropagation();
+                                                navigate(`/create_product/${product.id}`);
+                                            }}>Edit Product</button>
+                                            <button onClick={async (e) => {
+                                                e.stopPropagation();
                                                 await deleteProduct(product.id)
-                                                await loadProducts(product.category_id);
+                                                await loadProducts();
                                             }}>Delete Product</button>
                                         </div>
-                                    </button>
+                                    </div>
                                 ))
                             )
                         }
