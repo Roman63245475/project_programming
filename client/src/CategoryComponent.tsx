@@ -18,8 +18,8 @@ export function CategoryComponent({ onClose }: { onClose: () => void }) {
 
     }
     return (
-        <div className="pop-up-bg" onClick={onClose}>
-            <div className="pop-up" onClick={(e) => e.stopPropagation()}>
+        <div className={"pop-up-bg"} onClick={onClose}>
+            <div className={"pop-up space-even-v"} onClick={(e) => e.stopPropagation()}>
                 <h2>Create a category</h2>
                 <div className={"space-even-v"}>
                     <p>Category Name:</p>

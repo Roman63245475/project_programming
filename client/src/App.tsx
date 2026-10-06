@@ -51,12 +51,11 @@ export function App() {
 
     return (
         <main>
-            
             {isCategoryOpen && <CategoryComponent onClose={() => setIsCategoryOpen(false)} />}
-            <div className="content-pane">
+            <div>
                 <h1>List of products</h1>
 
-                <div className={"space-even-h"}>
+                <div className={"space-between-h"}>
                     <select defaultValue={""} onChange={(e) => {
                         const selectedId = parseInt(e.target.value);
                         loadProductsByCategoryId(selectedId);
@@ -66,8 +65,10 @@ export function App() {
                             <option key={category.id} value={category.id} >{category.name}</option>
                         ))}
                     </select>
-                    <button onClick={() => setIsCategoryOpen(!isCategoryOpen)}>Create sick ass category</button>
-                    <button onClick={() => navigate("/create_product")}>Create product</button>
+                    <div class={"space-even-v"}>
+                        <button onClick={() => navigate("/create_product")}>Create product</button>
+                        <button onClick={() => setIsCategoryOpen(!isCategoryOpen)}>Create sick ass category</button>
+                    </div>
                 </div>
                     <div className="product-grid">
                         {products.length === 0 ? (
@@ -79,8 +80,10 @@ export function App() {
                                         className="product-card"
                                         onClick={() => getProductDetails(product)}
                                     >
-                                        <img src={`${ApiImgUrl}/${product.image_path?.replaceAll("\\", "/")}`} alt={product.name ?? "Product"} />
-                                        <p>{product.name ?? "Unnamed product"}</p>
+                                        <div className="card-image-holder">
+                                            <img src={`${ApiImgUrl}/${product.image_path?.replaceAll("\\", "/")}`} alt={product.name ?? "Product"} />
+                                        </div>
+                                        <h2>{product.name ?? "Unnamed product"}</h2>
                                         <p>Price: {product.price !== undefined ? product.price : "-"}</p>
                                         <p>Quantity: {product.quantity !== undefined ? product.quantity : "-"}</p>
                                         <p>Available: {product.quantity !== undefined && product.available ? "Yes" : "No"}</p>
@@ -93,7 +96,7 @@ export function App() {
                                                 e.stopPropagation();
                                                 await deleteProduct(product.id)
                                                 await loadProducts();
-                                            }}>Delete Product</button>
+                                            }} className={"del-btn"}>Delete Product</button>
                                         </div>
                                     </div>
                                 ))

@@ -59,20 +59,22 @@ const CreateProductForm = () => {
     }
 
     return (
-        <div>
-            Name: <input type={'text'} value={product.name} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input>
-            Category: <select value={product.category_id} defaultValue={""} onChange={(e) => setField("category_id", Number(e.target.value))}>
-                <option value="" disabled>Select a category</option>
+        <div className={"space-even-v"}>
+            <h1>Product {id ? "Editing" : "Creation"}</h1>
+            <div> Name: <input type={'text'} value={product.name} placeholder={"Product's name"} onChange={(e) => {setField('name', e.target.value)}}></input> </div>
+            <div> Price: <input type={'number'} value={product.price} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input> </div>
+            <div> Quantity: <input type={'number'} value={product.quantity} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input> </div>
+            <div> Category: <select value={product.category_id} defaultValue={""} onChange={(e) => setField("category_id", Number(e.target.value))}>
+            <option value="" disabled>Select a category</option>
                 {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                         {category.name}
                     </option>
                 ))}
-            </select>
-            Image: <input type={'file'} onChange={(e) => setField('image', e.target.files[0])}></input>
-            Price: <input type={'number'} value={product.price} step={'any'} placeholder={"Product's price"} onChange={(e) => {setField('price', e.target.value)}}></input>
-            Quantity: <input type={'number'} value={product.quantity} placeholder={"Product's quantity"} onChange={(e) => {setField('quantity', e.target.value)}}></input>
-            Available: <input type={'checkbox'} checked={product.available} onChange={(e) => {setField('available', e.target.checked)}}></input>
+            </select> </div>
+            <div> Image: <input type={'file'} onChange={(e) => setField('image', e.target.files[0])}></input> </div>
+            <div> Available: <input type={'checkbox'} checked={product.available} onChange={(e) => {setField('available', e.target.checked)}}></input> </div>
+
             <button onClick={() => {
                 if (!product.category_id) {
                     alert('Please select a category');

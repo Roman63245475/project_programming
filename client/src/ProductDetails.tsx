@@ -65,39 +65,52 @@ export default function ProductDetails() {
     }
 
     return (
-        <main className="content-pane">
+        <main>
             {loading ? <p>Loading product…</p> : error ? <p>{error}</p> : product && (
                 <>
                     <a>Items in the basket: {amount} </a>
                     <h1>{product.name ?? "Unnamed product"}</h1>
-                    {product.image_path && (
-                        <img
-                            src={`${apiImageUrl}/${product.image_path.replaceAll("\\", "/")}`}
-                            alt={product.name ?? "Product"}
-                            style={{ maxWidth: "100%", height: "auto" }}
-                        />
-                    )}
-                    <p>Price: {product.price ?? "-"}</p>
-                    <p>Quantity: {product.quantity ?? "-"}</p>
-                    <p>Available: {product.available ? "Yes" : "No"}</p>
-                    <p>Category ID: {product.category_id ?? "-"}</p>
-                    <a>🛒</a><button onClick={() => {
-                        if (product.quantity){
-                            if (amount < product.quantity){
-                                console.log('increase')
-                                setAmount(amount + 1)
-                            }
-                        }
-                        else{
-                            setAmount(amount + 1)
-                        }
+                    <div className={"content-pane"}>
+                        {product.image_path && (
+                            <div className={"pd-image-holder"}>
+                                <img
+                                    src={`${apiImageUrl}/${product.image_path.replaceAll("\\", "/")}`}
+                                    alt={product.name ?? "Product"}
+                                    style={{ maxWidth: "100%", height: "auto" }}
+                                />
+                            </div>
 
-                }}>Add one more item</button> <button onClick={() => {
-                    if (amount > 0){
-                        setAmount(amount - 1)
-                    }
-                }}>Remove one item</button>
-                <button onClick={() => purchase()}>Buy</button>
+                        )}
+                        <div id={"product-description-c"} className={"space-even-v"}>
+                            <div>
+                                <p><strong>Price:</strong> {product.price ?? "-"}</p>
+                                <p><strong>Quantity:</strong> {product.quantity ?? "-"}</p>
+                                <p><strong>Available:</strong> {product.available ? "Yes" : "No"}</p>
+                                <p><strong>Category ID:</strong> {product.category_id ?? "-"}</p>
+                                <a>🛒</a> <br/><br/><br/>
+                                <div className={"space-even-v"}>
+                                    <button onClick={() => {
+                                        if (product.quantity){
+                                            if (amount < product.quantity){
+                                                console.log('increase')
+                                                setAmount(amount + 1)
+                                            }
+                                        }
+                                        else{
+                                            setAmount(amount + 1)
+                                        }
+
+                                }}>Add one more item</button>
+                                    <button onClick={() => {
+                                        if (amount > 0){
+                                            setAmount(amount - 1)
+                                        }
+                                    }}>Remove one item</button>
+                                    <button onClick={() => purchase()}>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </>
             )}
         </main>
