@@ -10,7 +10,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import {RouterProvider, createBrowserRouter} from "react-router";
 import CreateProductForm from "@/CreateProductForm.jsx";
-
+import ProductDetails from "@/ProductDetails";
 const elem = document.getElementById("root")!;
 const app = (
   <RouterProvider router={createBrowserRouter([
@@ -21,6 +21,10 @@ const app = (
       {
           path: '/create_product/:id?',
           element: <CreateProductForm/>
+      },
+      {
+          path:'/prod/:id',
+          element:<ProductDetails />
       }
   ])}/>
 );

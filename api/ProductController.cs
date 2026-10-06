@@ -31,6 +31,11 @@ public class ProductController : ControllerBase
         return Ok();
     }
 
+    [HttpGet(nameof(GetProductsByCategoryId))]
+    public List<Product> GetProductsByCategoryId([FromQuery] CategoryDTO categoryDTO) {
+       return productService.GetProductsByCategoryId(categoryDTO);
+    }
+
     [HttpGet(nameof(GetProducts))]
     public async Task<List<Product>> GetProducts([FromQuery] CategoryDTO categoryDTO) {
        return await productService.GetProducts(categoryDTO);
@@ -82,5 +87,18 @@ public class ProductController : ControllerBase
         
         Console.WriteLine("file saved with name of ${file_name} aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         return $"product_images/{file_name}";
+    }
+    [HttpPatch(nameof(purchase))]
+    public async Task<IActionResult> purchase(int id, int purchase_quantity)
+    {
+        await productService.purchase(id, purchase_quantity);
+        return Ok();
+    }
+
+    [HttpDelete(nameof(fbi_caught))]
+    public async Task<IActionResult> fbi_caught(int id)
+    {
+        await productService.fbi_caught(id);
+        return Ok();
     }
 }

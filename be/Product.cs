@@ -1,4 +1,7 @@
-﻿namespace be;
+﻿using api;
+using Facet;
+
+namespace be;
 
 public class Product
 {
@@ -27,4 +30,4 @@ public class Product
     }
 
 
-}
+    }

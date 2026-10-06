@@ -21,10 +21,10 @@ export function App() {
         const resp = await BackendApi.api.categoryGetCategories();
         setCategory(resp.data);
     }
-    async function loadProducts(categoryId : number) {
+    async function loadProductsByCategoryId(categoryId : number) {
         if (categoryId > 0) {
             try{
-                const response = await BackendApi.getProducts.productGetProducts({
+                const response = await BackendApi.getProductsByCategoryId.productGetProductsByCategoryId({
                     id: categoryId
                 });
                 setProducts(response.data);
@@ -40,6 +40,15 @@ export function App() {
         const response = await BackendApi.id.productDeleteProduct(categoryId);
     }
 
+    async function loadProducts(){
+        const resp = await BackendApi.getProducts.productGetProducts();
+        setProducts(resp.data);
+    }
+
+    function getProductDetails(Product) {
+        navigate("/prod/"+Product.id);
+    }
+
     return (
         <main>
             
@@ -50,7 +59,7 @@ export function App() {
                 <div className={"space-even-h"}>
                     <select defaultValue={""} onChange={(e) => {
                         const selectedId = parseInt(e.target.value);
-                        loadProducts(selectedId);
+                        loadProductsByCategoryId(selectedId);
                     }}>
                         <option value="" disabled>Select a category to view products</option>
                         {category.map((category) => (
@@ -65,7 +74,12 @@ export function App() {
                             <p>No products found.</p>
                             ) : (
                                 products.map((product) => (
-                                    <article key={product.id} className="product-card">
+                                    <button
+                                        key={product.id}
+                                        className="product-card"
+                                        type="button"
+                                        onClick={() => getProductDetails(product)}
+                                    >
                                         <img src={`${ApiImgUrl}/${product.image_path?.replaceAll("\\", "/")}`} alt={product.name ?? "Product"} />
                                         <p>{product.name ?? "Unnamed product"}</p>
                                         <p>Price: {product.price !== undefined ? product.price : "-"}</p>
@@ -78,7 +92,7 @@ export function App() {
                                                 await loadProducts(product.category_id);
                                             }}>Delete Product</button>
                                         </div>
-                                    </article>
+                                    </button>
                                 ))
                             )
                         }

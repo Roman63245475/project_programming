@@ -2,8 +2,6 @@
 using be;
 using database;
 using LinqToDB;
-using LinqToDB.Async;
-
 namespace service;
 
 public class ProductService
@@ -33,18 +31,32 @@ public class ProductService
         });
     }
 
-    public async Task<List<Product>> GetProducts(CategoryDTO categoryDTO) {
+    public List<Product> GetProductsByCategoryId(CategoryDTO categoryDTO) {
         return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
+
+    public List<Product> GetProducts()
+    {
+        return db.Products.ToList();
+    }
+
+    public Product GetProduct(int id)
+    {
+        
+       return db.Products.Where(product => product.id == id).FirstOrDefault() ?? throw new Exception("Product not found");
+        
+       }
+
+    public async Task purchase(int id, int purchase_quantity)
+    {
+        await db.Products.Where(p => p.id == id).Set(p => p.quantity, p => p.quantity-purchase_quantity).UpdateAsync();
+    }
+
+    public async Task fbi_caught(int id)
+    {
+        await db.Products.Where(p => p.id == id).DeleteAsync();
+    }
     
-    public async Task Delete(int id) {
-        await db.Products.Where((p) => p.id == id).DeleteAsync();
-    }
-
-    public async Task<Product> GetProduct(int id) {
-        return await db.Products.FirstOrDefaultAsync(p => p.id == id);
-    }
-
     public async Task Update(Product product, int id) {
         var query = db.Products.Where(p => p.id == id);
         if (!string.IsNullOrEmpty(product.image_path)) {
@@ -61,5 +73,9 @@ public class ProductService
                 .Set(p => p.category_id, product.category_id)
                 .Set(p => p.available, product.available).UpdateAsync();
         }
+    }
+    
+    public async Task Delete(int id) {
+        await db.Products.Where((p) => p.id == id).DeleteAsync();
     }
 }
