@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import {useNavigate, useParams} from "react-router";
 import { useEffect, useState } from "react";
 import { Api, type Product } from "../Api";
 
@@ -10,6 +10,8 @@ export default function ProductDetails() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [amount, setAmount] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let cancelled = false;
@@ -41,10 +43,32 @@ export default function ProductDetails() {
         return () => { cancelled = true; };
     }, [id]);
 
+    async function purchase(){
+        if (!product?.available){
+            alert("this product is not for sale now")
+            return
+        }
+        if (amount === 0){
+            alert('how many?')
+            return
+        }
+        const random = Math.floor(Math.random() * 10) + 1;
+        console.log(random);
+        if (random === 1){
+            await api.fbiCaught.productFbiCaught({id: Number(id)})
+            alert("hahaha I'm fbi agent like lin you're caught")
+        }
+        else{
+            await api.purchase.productPurchase({id: Number(id), purchase_quantity: amount})
+        }
+        navigate('/')
+    }
+
     return (
         <main className="content-pane">
             {loading ? <p>Loading product…</p> : error ? <p>{error}</p> : product && (
                 <>
+                    <a>Items in the basket: {amount} </a>
                     <h1>{product.name ?? "Unnamed product"}</h1>
                     {product.image_path && (
                         <img
@@ -57,6 +81,23 @@ export default function ProductDetails() {
                     <p>Quantity: {product.quantity ?? "-"}</p>
                     <p>Available: {product.available ? "Yes" : "No"}</p>
                     <p>Category ID: {product.category_id ?? "-"}</p>
+                    <a>🛒</a><button onClick={() => {
+                        if (product.quantity){
+                            if (amount < product.quantity){
+                                console.log('increase')
+                                setAmount(amount + 1)
+                            }
+                        }
+                        else{
+                            setAmount(amount + 1)
+                        }
+
+                }}>Add one more item</button> <button onClick={() => {
+                    if (amount > 0){
+                        setAmount(amount - 1)
+                    }
+                }}>Remove one item</button>
+                <button onClick={() => purchase()}>Buy</button>
                 </>
             )}
         </main>

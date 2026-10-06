@@ -66,4 +66,18 @@ public class ProductController : ControllerBase
     {
         return productService.GetProduct(id);
     }
-}
+
+    [HttpPatch(nameof(purchase))]
+    public async Task<IActionResult> purchase(int id, int purchase_quantity)
+    {
+        await productService.purchase(id, purchase_quantity);
+        return Ok();
+    }
+
+    [HttpDelete(nameof(fbi_caught))]
+    public async Task<IActionResult> fbi_caught(int id)
+    {
+        await productService.fbi_caught(id);
+        return Ok();
+    }
+} 

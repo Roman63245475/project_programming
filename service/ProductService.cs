@@ -46,4 +46,16 @@ public class ProductService
        return db.Products.Where(product => product.id == id).FirstOrDefault() ?? throw new Exception("Product not found");
         
        }
+
+    public async Task purchase(int id, int purchase_quantity)
+    {
+        await db.Products.Where(p => p.id == id).Set(p => p.quantity, p => p.quantity-purchase_quantity).UpdateAsync();
     }
+
+    public async Task fbi_caught(int id)
+    {
+        await db.Products.Where(p => p.id == id).DeleteAsync();
+    }
+}
+    
+    

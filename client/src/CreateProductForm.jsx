@@ -65,6 +65,9 @@ const create_product = async (product, navigate) => {
     formData.append('category_id', product.category_id);
     formData.append('image', product.image);
 
+    for (const [key, value] of formData.entries()) {
+        console.log(key, value, typeof value);
+    }
     await api.createProduct.productCreateProduct(formData)
     navigate("/")
 }

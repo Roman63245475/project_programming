@@ -399,6 +399,52 @@ export class Api<
         ...params,
       }),
   };
+  purchase = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductPurchase
+     * @request PATCH:/purchase
+     */
+    productPurchase: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+        /** @format int32 */
+        purchase_quantity?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/purchase`,
+        method: "PATCH",
+        query: query,
+        ...params,
+      }),
+  };
+  fbiCaught = {
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductFbiCaught
+     * @request DELETE:/fbi_caught
+     */
+    productFbiCaught: (
+      query?: {
+        /** @format int32 */
+        id?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/fbi_caught`,
+        method: "DELETE",
+        query: query,
+        ...params,
+      }),
+  };
   api = {
     /**
      * No description
