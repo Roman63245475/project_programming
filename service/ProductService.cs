@@ -35,7 +35,7 @@ public class ProductService
         return db.Products.Where(p => p.category_id == categoryDTO.id).ToList();
     }
 
-    public List<Product> GetProducts()
+    public async Task<List<Product>> GetProducts()
     {
         return db.Products.ToList();
     }
@@ -56,6 +56,26 @@ public class ProductService
     {
         await db.Products.Where(p => p.id == id).DeleteAsync();
     }
+    
+    public async Task Update(Product product, int id) {
+        var query = db.Products.Where(p => p.id == id);
+        if (!string.IsNullOrEmpty(product.image_path)) {
+            await query.Set(p => p.name, product.name)
+                .Set(p => p.price, product.price)
+                .Set(p => p.quantity, product.quantity)
+                .Set(p => p.category_id, product.category_id)
+                .Set(p => p.available, product.available)
+                .Set(p => p.image_path, product.image_path).UpdateAsync();
+        }else {
+            await query.Set(p => p.name, product.name)
+                .Set(p => p.price, product.price)
+                .Set(p => p.quantity, product.quantity)
+                .Set(p => p.category_id, product.category_id)
+                .Set(p => p.available, product.available).UpdateAsync();
+        }
+    }
+    
+    public async Task Delete(int id) {
+        await db.Products.Where((p) => p.id == id).DeleteAsync();
+    }
 }
-    
-    

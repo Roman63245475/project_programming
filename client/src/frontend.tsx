@@ -19,7 +19,7 @@ const app = (
         element: <App/>
       },
       {
-          path: '/create_product',
+          path: '/create_product/:id?',
           element: <CreateProductForm/>
       },
       {

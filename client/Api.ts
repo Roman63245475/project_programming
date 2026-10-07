@@ -12,7 +12,7 @@
 
 export interface Product {
   /** @format int32 */
-  id?: number | null;
+  id?: number;
   name?: string;
   /** @format decimal */
   price?: number;
@@ -376,26 +376,66 @@ export class Api<
         ...params,
       }),
   };
-  getProduct = {
+  id = {
     /**
      * No description
      *
      * @tags Product
      * @name ProductGetProduct
-     * @request GET:/GetProduct
+     * @request GET:/{id}
      */
-    productGetProduct: (
-      query?: {
+    productGetProduct: (id: number, params: RequestParams = {}) =>
+      this.request<Product, any>({
+        path: `/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductDeleteProduct
+     * @request DELETE:/{id}
+     */
+    productDeleteProduct: (id: number, params: RequestParams = {}) =>
+      this.request<Blob, any>({
+        path: `/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Product
+     * @name ProductUpdateProduct
+     * @request PUT:/{id}
+     */
+    productUpdateProduct: (
+      id: number,
+      data: {
         /** @format int32 */
-        id?: number;
+        id?: number | null;
+        name?: string | null;
+        /** @format decimal */
+        price?: number;
+        /** @format int32 */
+        quantity?: number;
+        available?: boolean;
+        /** @format int32 */
+        category_id?: number;
+        /** @format binary */
+        image?: File | null;
       },
       params: RequestParams = {},
     ) =>
-      this.request<Product, any>({
-        path: `/GetProduct`,
-        method: "GET",
-        query: query,
-        format: "json",
+      this.request<Blob, any>({
+        path: `/${id}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.FormData,
         ...params,
       }),
   };
