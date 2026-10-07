@@ -8,9 +8,16 @@ namespace api;
 public class CategoryController(CategoryService categoryService) : ControllerBase {
     [HttpPost(nameof(CreateCategory))]
     public async Task<ActionResult<ApiResponse>> CreateCategory([FromBody] CategoryDTO categoryDTO) {
-        var (isSuccess, message) = await categoryService.CreateCategory(categoryDTO);
-        if (!isSuccess) return BadRequest(new ApiResponse(message));
-        return Ok(new ApiResponse(message));
+        try
+        {
+            var (isSuccess, message) = await categoryService.CreateCategory(categoryDTO);
+            if (!isSuccess) return BadRequest(new ApiResponse(message));
+            return Ok(new ApiResponse(message));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet(nameof(get_categories))]

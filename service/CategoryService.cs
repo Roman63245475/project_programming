@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using api;
 using be;
 using database;
@@ -9,16 +10,30 @@ namespace service;
 
 public class CategoryService(DataBase db) {
     public async Task<(bool isSuccess, string message)> CreateCategory(CategoryDTO categoryDTO) {
-        try {
-            var category = new Category {
-                name = categoryDTO.name
-            };
-            await db.InsertAsync(category);
-            return (true, "Successfully created category!");
+        if (check_name(categoryDTO))
+        {
+            try {
+                var category = new Category {
+                    name = categoryDTO.name
+                };
+                await db.InsertAsync(category);
+                return (true, "Successfully created category!");
+            }
+            catch (PostgresException ex) when (ex.SqlState == "23505") {
+                return (false, "Couldn't create category! The category already exists.");
+            }   
         }
-        catch (PostgresException ex) when (ex.SqlState == "23505") {
-            return (false, "Couldn't create category! The category already exists.");
+        throw new ValidationException("Wrong data"); 
+    }
+
+    private bool check_name(CategoryDTO category)
+    {
+        if (category.name.Trim().Length == 0)
+        {
+            throw new ValidationException("Name is required");
         }
+
+        return true;
     }
 
     public async Task<List<Category>> get_categories()

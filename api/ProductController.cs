@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using api;
 using be;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,15 @@ public class ProductController : ControllerBase
             available = productDTO.available,
             image_path = imgPath
         };
-        await productService.create_product(product);
-        return Ok();
+        try
+        {
+            await productService.create_product(product);
+            return Ok();
+        }
+        catch (ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet(nameof(GetProductsByCategoryId))]

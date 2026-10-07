@@ -1,4 +1,5 @@
-﻿using api;
+﻿using System.ComponentModel.DataAnnotations;
+using api;
 using be;
 using database;
 using LinqToDB;
@@ -13,22 +14,55 @@ public class ProductService
         this.db = db;
     }
 
+    public ProductService()
+    {
+        
+    }
+
+    public bool validateData(Product product)
+    {
+        if (product is not null)
+        {
+            switch (product)
+            {
+                case Product p when p.name.Trim().Length == 0:
+                    throw new ValidationException("Name is required");
+                    break;
+                case Product p when p.price < 0:
+                    throw new ValidationException("Price can't be less than zero");
+                    break;
+                case Product p when p.quantity < 0:
+                    throw new ValidationException("Quantity can't be less than zero");
+                    break;
+                case Product p when p.category_id == null:
+                    throw  new ValidationException("Category id required");
+                    break;
+                case Product p when p.image_path == null:
+                    throw new ValidationException("Image is required");
+                default:
+                    return true;
+            }   
+        }
+        else
+        {
+            throw new ValidationException("No data has been recieved");
+        }
+    }
+
     public async Task create_product(Product product)
     {
-        Console.WriteLine($"db is null: {db == null}");
-        Console.WriteLine($"product is null: {product == null}");
-        Console.WriteLine($"name: {product.name}");
-        Console.WriteLine($"category_id: {product.category_id}");
-        Console.WriteLine($"image_path: {product.image_path}");
-        await db.Products.InsertAsync(() => new Product()
+        if (validateData(product))
         {
-            name = product.name,
-            price = product.price,
-            quantity = product.quantity,
-            available =  product.available,
-            category_id =  product.category_id,
-            image_path = product.image_path
-        });
+            await db.Products.InsertAsync(() => new Product()
+            {
+                name = product.name,
+                price = product.price,
+                quantity = product.quantity,
+                available =  product.available,
+                category_id =  product.category_id,
+                image_path = product.image_path
+            });
+        }
     }
 
     public List<Product> GetProductsByCategoryId(CategoryDTO categoryDTO) {
